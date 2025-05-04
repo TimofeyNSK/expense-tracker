@@ -11,13 +11,11 @@ import ru.zarubin.expensetracker.mapper.TransactionMapper;
 import ru.zarubin.expensetracker.model.Transaction;
 import ru.zarubin.expensetracker.repository.TransactionRepository;
 import ru.zarubin.expensetracker.service.TransactionService;
-
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-
-@Service
 @AllArgsConstructor
+@Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
@@ -69,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Double getAllTransactionSum(CategoryType type) {
-        return findTransactionByCategoryType(type).stream().mapToDouble(Transaction::getAmount).sum();
+        return mapper.toListEntity(findTransactionByCategoryType(type)).stream().mapToDouble(Transaction::getAmount).sum();
 
     }
 
@@ -92,7 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Double getTransactionSumByCategoryAndType(CategoryType type, String name) {
-        List<Transaction> categoryTypeTransaction = findTransactionByCategoryType(type);
+        mapper.toListEntity(findTransactionByCategoryType(type));
         return mapper.toListEntity(findTransactionByName(name)).stream()
                 .filter(x -> x.getCategory().getType().equals(type))
                 .mapToDouble(Transaction::getAmount)
