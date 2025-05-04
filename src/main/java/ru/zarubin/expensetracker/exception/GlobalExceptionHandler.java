@@ -1,0 +1,42 @@
+package ru.zarubin.expensetracker.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handlerGeneralException(Exception ex) {
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Exception", ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiErrorResponse> handlerRuntimeException(RuntimeException ex) {
+        ApiErrorResponse erroreResponse = new ApiErrorResponse(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "RuntimeException", ex.getMessage()
+        );
+        return new ResponseEntity<>(erroreResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handlerCategoryNiotFoundException(CategoryNotFoundException ex) {
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "CategoryNotFoundException", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handlerTransactionNotFoundException(TransactionNotFoundException ex) {
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "TransactionNotFoundException", ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+}
