@@ -6,10 +6,13 @@ import ru.zarubin.expensetracker.model.Transaction;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-     List<Transaction> findByDateOfPurchase(LocalDate date);
+    List<Transaction> findByDateOfPurchase(LocalDate date);
+
     List<Transaction> findByCategoryId(Long id);
+
     List<Transaction> findByName(String name);
 
 

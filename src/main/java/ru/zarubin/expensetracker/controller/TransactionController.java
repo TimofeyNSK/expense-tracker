@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import ru.zarubin.expensetracker.service.TransactionService;
 import java.time.LocalDate;
 
 import java.util.List;
+@Slf4j
 @Validated
 @RestController
 @AllArgsConstructor
@@ -25,60 +27,74 @@ public class TransactionController {
     private final TransactionService transactionService;
     @GetMapping("/get_all")
     public List<TransactionDTO> getAllTransactions() {
+        log.info("Get all transactions");
         return  transactionService.getAll();
     }
     @GetMapping("/by_category")
     public List<TransactionDTO> getTransactionsByCategory(@NotNull @RequestParam  Long id) {
+        log.info("Get transactions by category");
         return transactionService.findByCategoryId(id);
     }
     @GetMapping("/by_date")
     public List<TransactionDTO> getTransactionsByDate(@NotBlank @RequestParam  LocalDate date) {
+        log.info("Get transactions by date {}", date);
         return transactionService.getByDate(date);
     }
     @PostMapping("/add_transaction")
         public String addTransaction(@Valid @RequestBody TransactionCreateDTO transaction) {
+        log.info("Add transaction {}", transaction);
             transactionService.addTransaction(transaction);
             return "Transaction saved";
         }
         @GetMapping("/by_ascending_order")
     public List<TransactionDTO> getTransactionByAscendingOrder(){
+        log.info("Get transactions by ascending order");
         return transactionService.getTransactionByAscendingOrder();
         }
         @GetMapping("/by_descending_order")
     public List<TransactionDTO> getTransactionByDescendingOrder(){
+        log.info("Get transactions by descending order");
         return transactionService.getTransactionByDescendingOrder();
         }
         @GetMapping("/all_sum_transaction_by_category_type")
     public Double getAllTransactionSum(@NotBlank @RequestParam CategoryType type){
+        log.info("Get transaction sum by category type {}", type);
         return transactionService.getAllTransactionSum(type);
         }
         @GetMapping("/transaction_sum_by_category")
     public Double getTransactionSumByCategory(@NotBlank @RequestParam  Long id){
+        log.info("Get transaction sum by category with id {}", id);
         return transactionService.getTransactionSumByCategory(id);//todo Изменить Postman запрос с String на id
         }
         @GetMapping("/transaction_sum_by_date")
     public Double getTransactionSumByDate(@NotBlank @RequestParam  LocalDate date){
+        log.info("Get transaction sum by date {}", date);
         return transactionService.getTransactionSumByDate(date);
         }
         @GetMapping("/transaction_sum_by_category_and_type")
      public Double getTransactionSumByCategoryAndType(@NotBlank @RequestParam  CategoryType type, @RequestParam  String name){
+        log.info("Get transaction sum by category and type {}", type);
         return transactionService.getTransactionSumByCategoryAndType(type, name);
      }
      @DeleteMapping("/delete")
      public ResponseEntity<Void> deleteTransaction(@Valid @RequestBody Long id){
+        log.info("Delete transaction {}", id);
         transactionService.deleteById(id);
         return ResponseEntity.noContent().build();
      }
      @GetMapping("/by_name")
     public List<TransactionDTO> findTransactionByName(@NotBlank @RequestParam  String name){
+        log.info("Find transaction by name {}", name);
         return transactionService.findTransactionByName(name);
      }
      @PutMapping("/update")
     public TransactionDTO updateTransaction(@Valid @RequestBody TransactionUpdateDTO transaction){
+        log.info("Update transaction {}", transaction);
         return transactionService.updateTransaction(transaction);
      }
      @GetMapping("/by_category_type")
     public List<TransactionDTO> findTransactionByCategoryType(@RequestParam  CategoryType type){
+        log.info("Find transactions by category type {}", type);
         return transactionService.findTransactionByCategoryType(type);
      }
 

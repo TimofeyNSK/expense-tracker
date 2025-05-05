@@ -11,11 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
 
-    public TransactionDTO toDTO(Transaction transaction);
+    TransactionDTO toDTO(Transaction transaction);
 
-    public Transaction toEntity(TransactionDTO transactionDTO);
-    public List<TransactionDTO> toListDTO(List<Transaction> transaction);
-    public List<Transaction> toListEntity(List<TransactionDTO> transactionDTO);
-    public Transaction toCreateEntity(TransactionCreateDTO transactionCreateDTO);
-    public Transaction toUpdateEntity(TransactionUpdateDTO transactionUpdateDTO);
+    Transaction toEntity(TransactionDTO transactionDTO);
+
+    List<TransactionDTO> toListDTO(List<Transaction> transaction);
+
+    List<Transaction> toListEntity(List<TransactionDTO> transactionDTO);
+
+    Transaction toCreateEntity(TransactionCreateDTO transactionCreateDTO);
+
+    Transaction toUpdateEntity(TransactionUpdateDTO transactionUpdateDTO);
 }
