@@ -1,8 +1,10 @@
 package ru.zarubin.expensetracker.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.zarubin.expensetracker.dto.CategoryCreateDTO;
 import ru.zarubin.expensetracker.dto.CategoryDTO;
@@ -12,7 +14,7 @@ import ru.zarubin.expensetracker.service.CategoryService;
 
 import java.util.List;
 
-
+@Validated
 @RestController
 @RequestMapping("/categories")
 @Data
@@ -32,11 +34,11 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/name")
-    public CategoryDTO findByName(@Valid @RequestParam String name){
+    public CategoryDTO findByName(@NotBlank @RequestParam String name){
         return categoryService.findByName(name);
     }
     @GetMapping("/type")
-    public List<CategoryDTO> findByType(@Valid @RequestParam CategoryType type){
+    public List<CategoryDTO> findByType(@RequestParam CategoryType type){
         return categoryService.findByType(type);
     }
     @PutMapping("/update")

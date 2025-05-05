@@ -1,9 +1,12 @@
 package ru.zarubin.expensetracker.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.zarubin.expensetracker.dto.TransactionCreateDTO;
 import ru.zarubin.expensetracker.dto.TransactionDTO;
@@ -14,7 +17,7 @@ import ru.zarubin.expensetracker.service.TransactionService;
 import java.time.LocalDate;
 
 import java.util.List;
-
+@Validated
 @RestController
 @AllArgsConstructor
 @RequestMapping("/transactions")
@@ -25,11 +28,11 @@ public class TransactionController {
         return  transactionService.getAll();
     }
     @GetMapping("/by_category")
-    public List<TransactionDTO> getTransactionsByCategory(@Valid @RequestParam  Long id) {
+    public List<TransactionDTO> getTransactionsByCategory(@NotNull @RequestParam  Long id) {
         return transactionService.findByCategoryId(id);
     }
     @GetMapping("/by_date")
-    public List<TransactionDTO> getTransactionsByDate(@Valid @RequestParam  LocalDate date) {
+    public List<TransactionDTO> getTransactionsByDate(@NotBlank @RequestParam  LocalDate date) {
         return transactionService.getByDate(date);
     }
     @PostMapping("/add_transaction")
@@ -46,19 +49,19 @@ public class TransactionController {
         return transactionService.getTransactionByDescendingOrder();
         }
         @GetMapping("/all_sum_transaction_by_category_type")
-    public Double getAllTransactionSum(@Valid @RequestParam CategoryType type){
+    public Double getAllTransactionSum(@NotBlank @RequestParam CategoryType type){
         return transactionService.getAllTransactionSum(type);
         }
         @GetMapping("/transaction_sum_by_category")
-    public Double getTransactionSumByCategory(@Valid @RequestParam  Long id){
+    public Double getTransactionSumByCategory(@NotBlank @RequestParam  Long id){
         return transactionService.getTransactionSumByCategory(id);//todo Изменить Postman запрос с String на id
         }
         @GetMapping("/transaction_sum_by_date")
-    public Double getTransactionSumByDate(@Valid @RequestParam  LocalDate date){
+    public Double getTransactionSumByDate(@NotBlank @RequestParam  LocalDate date){
         return transactionService.getTransactionSumByDate(date);
         }
         @GetMapping("/transaction_sum_by_category_and_type")
-     public Double getTransactionSumByCategoryAndType(@Valid @RequestParam  CategoryType type,@Valid @RequestParam  String name){
+     public Double getTransactionSumByCategoryAndType(@NotBlank @RequestParam  CategoryType type, @RequestParam  String name){
         return transactionService.getTransactionSumByCategoryAndType(type, name);
      }
      @DeleteMapping("/delete")
@@ -67,7 +70,7 @@ public class TransactionController {
         return ResponseEntity.noContent().build();
      }
      @GetMapping("/by_name")
-    public List<TransactionDTO> findTransactionByName(@Valid @RequestParam  String name){
+    public List<TransactionDTO> findTransactionByName(@NotBlank @RequestParam  String name){
         return transactionService.findTransactionByName(name);
      }
      @PutMapping("/update")
@@ -75,7 +78,7 @@ public class TransactionController {
         return transactionService.updateTransaction(transaction);
      }
      @GetMapping("/by_category_type")
-    public List<TransactionDTO> findTransactionByCategoryType(@Valid @RequestParam  CategoryType type){
+    public List<TransactionDTO> findTransactionByCategoryType(@RequestParam  CategoryType type){
         return transactionService.findTransactionByCategoryType(type);
      }
 
