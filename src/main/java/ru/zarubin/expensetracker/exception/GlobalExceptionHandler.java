@@ -1,7 +1,9 @@
 package ru.zarubin.expensetracker.exception;
 
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -36,6 +38,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handlerTransactionNotFoundException(TransactionNotFoundException ex) {
         ApiErrorResponse errorResponse = new ApiErrorResponse(
                 LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "TransactionNotFoundException", ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiErrorResponse> handlerValidationException(ValidationException ex) {
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "ValidationException", ex.getMessage()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
