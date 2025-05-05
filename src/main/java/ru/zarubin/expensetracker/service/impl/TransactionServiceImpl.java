@@ -136,11 +136,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionDTO addTransaction(TransactionCreateDTO transactionCreateDTO) {
+    public void addTransaction(TransactionCreateDTO transactionCreateDTO) {
         Transaction transaction = mapper.toCreateEntity(transactionCreateDTO);
         repository.save(transaction);
         log.info("Added transaction in method addTransaction");
-        return mapper.toDTO(transaction);
+        mapper.toDTO(transaction);
     }
 
     @Override
