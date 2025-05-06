@@ -19,5 +19,5 @@ public class TransactionCreateDTO {
     @NotNull(message = "A transaction cannot be without a date of purchase")
     private LocalDate dateOfPurchase;
     @NotNull(message = "A transaction cannot be without a category")
-    private CategoryDTO category;
+    private Long id;
 }
