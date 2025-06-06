@@ -18,8 +18,8 @@ public interface CategoryService {
 
     CategoryDTO findByName(String name);
 
-    List<CategoryDTO> findByType(CategoryType type);
+    List<CategoryDTO> findByCategoryType(CategoryType categoryType);
 
-    CategoryDTO updateCategory(CategoryUpdateDTO updateCantegory);
+    CategoryDTO updateCategory(CategoryUpdateDTO updateCategory);
 
 }

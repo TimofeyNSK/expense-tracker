@@ -1,6 +1,7 @@
 package ru.zarubin.expensetracker.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.zarubin.expensetracker.dto.CategoryCreateDTO;
 import ru.zarubin.expensetracker.dto.CategoryDTO;
@@ -15,6 +16,7 @@ import ru.zarubin.expensetracker.service.CategoryService;
 import java.util.List;
 
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -32,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO saveCategory(CategoryCreateDTO categoryDTO) {
+        log.info("categoryDTO: {},name: {}, categoryType: {}", categoryDTO,categoryDTO.getName(),categoryDTO.getCategoryType());
         Category category = mapper.toCreateEntity(categoryDTO);
         Category savedCategory = repository.save(category);
         return mapper.toDTO(savedCategory);
@@ -49,10 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> findByType(CategoryType type) {
-        List<Category> categories = repository.findByType(type);
+    public List<CategoryDTO> findByCategoryType(CategoryType categoryType) {
+        log.info("categoryType: {}", categoryType);
+        List<Category> categories = repository.findByCategoryType(categoryType);
         if (categories.isEmpty()) {
-            throw new CategoryTypeNotFoundException("Category type: " + type + " not found");
+            throw new CategoryTypeNotFoundException("Category type: " + categoryType + " not found");
         }
 
         return mapper.toDTOList(categories);
@@ -60,13 +64,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO updateCategory(CategoryUpdateDTO updateCategory) {
+        log.info("id {},name: {}, categoryType: {}", updateCategory.getId(), updateCategory.getName(), updateCategory.getCategoryType());
         Category category = mapper.toUpdateEntity(updateCategory);
+        log.info("id: {},name: {}, categoryType: {}", category.getId(), category.getName(), category.getCategoryType());
         Category oldCategory = repository.findById(category
                 .getId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category: " + updateCategory.toString() + " not found"));
+        log.info("id: {},name: {}, categoryType: {}", oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
         oldCategory.setName(category.getName());
-        oldCategory.setType(category.getType());
+        oldCategory.setCategoryType(category.getCategoryType());
+        log.info("id: {},name: {}, categoryType: {}", oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
         repository.save(oldCategory);
+        log.info("id {},name: {}, categoryType: {}",oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
         return mapper.toDTO(oldCategory);
     }
 }

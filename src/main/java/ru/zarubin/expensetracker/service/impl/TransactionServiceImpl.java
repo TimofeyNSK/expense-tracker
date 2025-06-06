@@ -123,7 +123,7 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Calculating the transaction amount with name:{} and type:{}", name, type);
         List<Transaction> transactions = mapper.toListEntity(findTransactionByName(name))
                 .stream()
-                .filter(x -> x.getCategory().getType().equals(type))
+                .filter(x -> x.getCategory().getCategoryType().equals(type))
                 .toList();
         if (transactions.isEmpty()) {
             log.warn("No transactions found in method getTransactionSumByCategoryAndType");
@@ -181,7 +181,7 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionDTO> findTransactionByCategoryType(CategoryType type) {
         List<Transaction> transactions = repository.findAll()
                 .stream()
-                .filter(transaction -> transaction.getCategory().getType().equals(type)).toList();
+                .filter(transaction -> transaction.getCategory().getCategoryType().equals(type)).toList();
         if (transactions.isEmpty()) {
             log.warn("No transactions found with type: {}", type);
             throw new TransactionNotFoundException("Transaction with Category : " + type.toString() + " not found");
