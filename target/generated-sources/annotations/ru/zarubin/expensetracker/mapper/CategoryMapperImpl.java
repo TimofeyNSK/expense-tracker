@@ -11,7 +11,7 @@ import ru.zarubin.expensetracker.model.Category;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-02T14:09:39+0700",
+    date = "2025-06-07T12:33:35+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component

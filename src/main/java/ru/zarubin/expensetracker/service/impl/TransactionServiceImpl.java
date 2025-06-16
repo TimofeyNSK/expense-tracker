@@ -7,9 +7,12 @@ import ru.zarubin.expensetracker.dto.TransactionCreateDTO;
 import ru.zarubin.expensetracker.dto.TransactionDTO;
 import ru.zarubin.expensetracker.dto.TransactionUpdateDTO;
 import ru.zarubin.expensetracker.enums.CategoryType;
+import ru.zarubin.expensetracker.exception.CategoryNotFoundException;
 import ru.zarubin.expensetracker.exception.TransactionNotFoundException;
 import ru.zarubin.expensetracker.mapper.TransactionMapper;
+import ru.zarubin.expensetracker.model.Category;
 import ru.zarubin.expensetracker.model.Transaction;
+import ru.zarubin.expensetracker.repository.CategoryRepository;
 import ru.zarubin.expensetracker.repository.TransactionRepository;
 import ru.zarubin.expensetracker.service.TransactionService;
 
@@ -23,7 +26,7 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
-
+    private final CategoryRepository categoryRepository;
     @Override
     public List<TransactionDTO> getAll() {
         List<Transaction> transactions = repository.findAll();
@@ -53,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
             log.warn("No transactions found in method getByDate ");
             throw new TransactionNotFoundException("Transaction with Date of Purchase: " + date + " not found");
         }
-        log.info("Found {} transactions in method getByDate ", transactions.size());
+        log.info("Found {} transactions in method getByDate", transactions.size());
         return mapper.toListDTO(transactions);
     }
 
@@ -136,11 +139,18 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void addTransaction(TransactionCreateDTO transactionCreateDTO) {
+    public TransactionDTO addTransaction(TransactionCreateDTO transactionCreateDTO) {
+        log.info("1.transactionCreateDTO {}", transactionCreateDTO);
+        Category category = categoryRepository
+                .findById(transactionCreateDTO.getCategoryId())
+                .orElseThrow(()->new CategoryNotFoundException("Category with id"+transactionCreateDTO.getCategoryId()+" not found"));
+        log.info("2.category {}",category);
         Transaction transaction = mapper.toCreateEntity(transactionCreateDTO);
+        transaction.setCategory(category);
+        log.info("3.transaction {}", transaction);
         repository.save(transaction);
         log.info("Added transaction in method addTransaction");
-        mapper.toDTO(transaction);
+        return mapper.toDTO(transaction);
     }
 
     @Override
@@ -186,7 +196,7 @@ public class TransactionServiceImpl implements TransactionService {
             log.warn("No transactions found with type: {}", type);
             throw new TransactionNotFoundException("Transaction with Category : " + type.toString() + " not found");
         }
-        log.info("Found {} transactions", transactions.size());
+        log.info("Found {} transactions in method findTransactionByCategoryType", transactions.size());
         return mapper.toListDTO(transactions);
     }
 }

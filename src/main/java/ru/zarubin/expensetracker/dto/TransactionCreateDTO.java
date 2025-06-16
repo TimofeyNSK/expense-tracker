@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+
 import java.time.LocalDate;
 
 @Data
@@ -18,6 +19,6 @@ public class TransactionCreateDTO {
     private Double amount;
     @NotNull(message = "A transaction cannot be without a date of purchase")
     private LocalDate dateOfPurchase;
-    @NotNull(message = "A transaction cannot be without a category")
-    private Long id;
+@NotNull(message = "A transaction cannot be without a category")
+    private Long categoryId;
 }

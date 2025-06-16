@@ -13,7 +13,7 @@ import ru.zarubin.expensetracker.model.Transaction;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-02T14:09:38+0700",
+    date = "2025-06-07T12:33:36+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component
@@ -92,7 +92,6 @@ public class TransactionMapperImpl implements TransactionMapper {
         transaction.setName( transactionCreateDTO.getName() );
         transaction.setAmount( transactionCreateDTO.getAmount() );
         transaction.setDateOfPurchase( transactionCreateDTO.getDateOfPurchase() );
-        transaction.setCategory( categoryDTOToCategory( transactionCreateDTO.getCategory() ) );
 
         return transaction;
     }

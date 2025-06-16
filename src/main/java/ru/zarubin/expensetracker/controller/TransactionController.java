@@ -36,15 +36,15 @@ public class TransactionController {
         return transactionService.findByCategoryId(id);
     }
     @GetMapping("/by_date")
-    public List<TransactionDTO> getTransactionsByDate(@NotBlank @RequestParam  LocalDate date) {
+    public List<TransactionDTO> getTransactionsByDate(@NotNull @RequestParam  LocalDate date) {
         log.info("Get transactions by date {}", date);
         return transactionService.getByDate(date);
     }
     @PostMapping("/add_transaction")
-        public String addTransaction(@Valid @RequestBody TransactionCreateDTO transaction) {
-        log.info("Add transaction {}", transaction);
-            transactionService.addTransaction(transaction);
-            return "Transaction saved";
+        public TransactionDTO addTransaction(@Valid @RequestBody TransactionCreateDTO transaction) {
+        log.info("transactionCreateDTO {}", transaction);
+            return transactionService.addTransaction(transaction);
+
         }
         @GetMapping("/by_ascending_order")
     public List<TransactionDTO> getTransactionByAscendingOrder(){
@@ -57,24 +57,24 @@ public class TransactionController {
         return transactionService.getTransactionByDescendingOrder();
         }
         @GetMapping("/all_sum_transaction_by_category_type")
-    public Double getAllTransactionSum(@NotBlank @RequestParam CategoryType type){
-        log.info("Get transaction sum by category type {}", type);
-        return transactionService.getAllTransactionSum(type);
+    public Double getAllTransactionSum(@NotNull @RequestParam CategoryType categoryType){
+        log.info("Get transaction sum by category type {}",categoryType);
+        return transactionService.getAllTransactionSum(categoryType);
         }
-        @GetMapping("/transaction_sum_by_category")
-    public Double getTransactionSumByCategory(@NotBlank @RequestParam  Long id){
+        @GetMapping("/transaction_sum_by_category_id")
+    public Double getTransactionSumByCategory(@NotNull @RequestParam  Long id){
         log.info("Get transaction sum by category with id {}", id);
-        return transactionService.getTransactionSumByCategory(id);//todo Изменить Postman запрос с String на id
+        return transactionService.getTransactionSumByCategory(id);
         }
         @GetMapping("/transaction_sum_by_date")
-    public Double getTransactionSumByDate(@NotBlank @RequestParam  LocalDate date){
+    public Double getTransactionSumByDate(@NotNull @RequestParam  LocalDate date){
         log.info("Get transaction sum by date {}", date);
         return transactionService.getTransactionSumByDate(date);
         }
         @GetMapping("/transaction_sum_by_category_and_type")
-     public Double getTransactionSumByCategoryAndType(@NotBlank @RequestParam  CategoryType type, @RequestParam  String name){
-        log.info("Get transaction sum by category and type {}", type);
-        return transactionService.getTransactionSumByCategoryAndType(type, name);
+     public Double getTransactionSumByCategoryAndType(@NotNull @RequestParam  CategoryType categoryType, @RequestParam @NotBlank String name){
+        log.info("Get transaction sum by category and type {}", categoryType);
+        return transactionService.getTransactionSumByCategoryAndType(categoryType, name);
      }
      @DeleteMapping("/delete")
      public ResponseEntity<Void> deleteTransaction(@Valid @RequestBody Long id){
@@ -93,9 +93,9 @@ public class TransactionController {
         return transactionService.updateTransaction(transaction);
      }
      @GetMapping("/by_category_type")
-    public List<TransactionDTO> findTransactionByCategoryType(@RequestParam  CategoryType type){
-        log.info("Find transactions by category type {}", type);
-        return transactionService.findTransactionByCategoryType(type);
+    public List<TransactionDTO> findTransactionByCategoryType(@NotNull @RequestParam  CategoryType categoryType){
+        log.info("Find transactions by category type {}", categoryType);
+        return transactionService.findTransactionByCategoryType(categoryType);
      }
 
 

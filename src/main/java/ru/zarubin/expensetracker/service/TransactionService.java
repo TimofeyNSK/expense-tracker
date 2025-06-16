@@ -27,7 +27,7 @@ public interface TransactionService {
 
     Double getTransactionSumByCategoryAndType(CategoryType type, String name);
 
-    void addTransaction(TransactionCreateDTO transaction);
+    TransactionDTO addTransaction(TransactionCreateDTO transaction);
 
     void deleteById(Long id);
 
