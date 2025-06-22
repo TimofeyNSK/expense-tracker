@@ -25,7 +25,7 @@ public interface TransactionService {
 
     Double getTransactionSumByDate(LocalDate date);
 
-    Double getTransactionSumByCategoryAndType(CategoryType type, String name);
+    Double getTransactionSumByTransactionNameAndType(CategoryType type, String name);
 
     TransactionDTO addTransaction(TransactionCreateDTO transaction);
 

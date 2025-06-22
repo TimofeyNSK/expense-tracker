@@ -25,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> getAll() {
+        log.info("Get all categories");
         List<Category> categories = repository.findAll();
         if (categories.isEmpty()) {
             throw new CategoryNotFoundException("There are no categories");
@@ -42,11 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
+        log.info("categoryId: {},name: {}", id, repository.findById(id).get().getName());
         repository.deleteById(id);
     }
 
     @Override
     public CategoryDTO findByName(String name) {
+        log.info("categoryName: {},name: {}", name, repository.findByName(name).get().getName());
         Category category = repository.findByName(name).orElseThrow(() -> new CategoryNotFoundException("Category with name: \"" + name + "\" not found"));
         return mapper.toDTO(category);
     }
@@ -66,14 +69,11 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO updateCategory(CategoryUpdateDTO updateCategory) {
         log.info("id {},name: {}, categoryType: {}", updateCategory.getId(), updateCategory.getName(), updateCategory.getCategoryType());
         Category category = mapper.toUpdateEntity(updateCategory);
-        log.info("id: {},name: {}, categoryType: {}", category.getId(), category.getName(), category.getCategoryType());
         Category oldCategory = repository.findById(category
                 .getId())
-                .orElseThrow(() -> new CategoryNotFoundException("Category: " + updateCategory.toString() + " not found"));
-        log.info("id: {},name: {}, categoryType: {}", oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
+                .orElseThrow(() -> new CategoryNotFoundException("Category: " + updateCategory + " not found"));
         oldCategory.setName(category.getName());
         oldCategory.setCategoryType(category.getCategoryType());
-        log.info("id: {},name: {}, categoryType: {}", oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
         repository.save(oldCategory);
         log.info("id {},name: {}, categoryType: {}",oldCategory.getId(), oldCategory.getName(), oldCategory.getCategoryType());
         return mapper.toDTO(oldCategory);

@@ -14,7 +14,7 @@ public class TransactionCreateDTO {
     @NotBlank(message = "A transaction cannot be without a name ")
     @Size(max = 50, message = "Name must be at most 50 characters")
     private String name;
-    @DecimalMin(value = "0.0000000001", message = "Amount be greater than 0")
+    @DecimalMin(value = "0", message = "Amount be greater than 0")
     @NotNull(message = "A transaction cannot be without a amount")
     private Double amount;
     @NotNull(message = "A transaction cannot be without a date of purchase")

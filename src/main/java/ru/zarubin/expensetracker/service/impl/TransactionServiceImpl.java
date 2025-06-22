@@ -122,7 +122,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Double getTransactionSumByCategoryAndType(CategoryType type, String name) {
+    public Double getTransactionSumByTransactionNameAndType(CategoryType type, String name) {
         log.info("Calculating the transaction amount with name:{} and type:{}", name, type);
         List<Transaction> transactions = mapper.toListEntity(findTransactionByName(name))
                 .stream()

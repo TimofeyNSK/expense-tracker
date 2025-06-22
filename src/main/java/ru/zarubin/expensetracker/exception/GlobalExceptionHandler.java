@@ -23,10 +23,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiErrorResponse> handlerRuntimeException(RuntimeException ex) {
-        ApiErrorResponse erroreResponse = new ApiErrorResponse(
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
                 LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "RuntimeException", ex.getMessage()
         );
-        return new ResponseEntity<>(erroreResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
